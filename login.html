@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="script.js"></script>
+    <!-- Google Fonts - Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Đăng nhập - HLK Championship 2025</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="navbar-left">
+                    <div class="navbar-logo-container">
+                        <img src="assets/logo_light.png" alt="HLK Championship 2025 Logo" class="logo-light" width="100px">
+                        <img src="assets/logo_dark.png" alt="HLK Championship 2025 Logo" class="logo-dark" width="100px">
+                    </div>
+                </div>
+                
+                <div class="navbar-center">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="join.html">Tham gia</a></li>
+                        <li><a href="index.html#rules">Thể lệ</a></li>
+                        <li><a href="index.html#list">Danh sách</a></li>
+                        <li><a href="index.html#news">Bảng tin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="navbar-right">
+                    <div class="profile-dropdown-container">
+                        <button class="navbar-btn profile-btn" title="Profile" onclick="toggleProfileDropdown()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown for logged-out users -->
+                        <div class="profile-dropdown logged-out-menu" id="loggedOutMenu">
+                            <div class="dropdown-header">
+                                <h4>Tham gia HLK Championship</h4>
+                                <p>Đăng nhập để không bỏ lỡ cơ hội</p>
+                            </div>
+                            <div class="dropdown-content">
+                                <a href="login.html" class="dropdown-item primary">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <polyline points="10,17 15,12 10,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <line x1="15" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Đăng nhập
+                                </a>
+                                <a href="register.html" class="dropdown-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Đăng ký
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown for logged-in users -->
+                        <div class="profile-dropdown logged-in-menu" id="loggedInMenu">
+                            <div class="dropdown-header">
+                                <div class="user-avatar">
+                                    <span id="userInitials">HV</span>
+                                </div>
+                                <div class="user-info">
+                                    <h4 id="userName">Học viên HLK</h4>
+                                    <p id="userClass">Lớp 11A1</p>
+                                </div>
+                            </div>
+                            <div class="dropdown-content">
+                                <a href="#" class="dropdown-item" onclick="viewProfile()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Hồ sơ cá nhân
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="viewTournaments()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M12 3v18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Giải đấu của tôi
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="viewNotifications()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Thông báo
+                                    <span class="notification-badge" id="notificationCount">3</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item" onclick="viewSettings()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Cài đặt
+                                </a>
+                                <a href="#" class="dropdown-item logout" onclick="logout()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Đăng xuất
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="navbar-btn theme-btn" title="Toggle Theme" onclick="toggleTheme()">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="login-main">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h1>Đăng nhập</h1>
+                        <p>Đăng nhập vào tài khoản của bạn để tham gia HLK Championship 2025</p>
+                    </div>
+
+                    <form class="login-form" id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email hoặc tên đăng nhập</label>
+                            <input 
+                                type="text" 
+                                id="email" 
+                                name="email" 
+                                required
+                                placeholder="Nhập email hoặc tên đăng nhập"
+                                autocomplete="email"
+                            >
+                            <span class="form-error" id="email-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Mật khẩu</label>
+                            <div class="password-input-container">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    required
+                                    placeholder="Nhập mật khẩu"
+                                    autocomplete="current-password"
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword()">
+                                    <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <svg class="eye-off-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <span class="form-error" id="password-error"></span>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="remember" name="remember">
+                                <span class="checkmark"></span>
+                                Ghi nhớ đăng nhập
+                            </label>
+                            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary login-btn">
+                            <span class="btn-text">Đăng nhập</span>
+                            <div class="btn-loading">
+                                <div class="spinner"></div>
+                                <span>Đang xử lý...</span>
+                            </div>
+                        </button>
+                    </form>
+                    <div class="login-footer">
+                        <p>Chưa có tài khoản? <a href="register.html" class="register-link">Đăng ký ngay</a></p>
+                    </div>
+                </div>
+
+                <div class="login-info">
+                    <div class="card">
+                        <h3>Tại sao nên tạo tài khoản?</h3>
+                        <ul class="info-list">
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Nhận được vé quay lucky draw quà tặng từ nhà tài trợ
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Theo dõi lịch thi đấu và kết quả
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Đăng ký tham gia giải đấu
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Kết nối với cộng đồng game thủ của trường
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <h1>HLK Championship 2025</h1>
+            <p>© 2025 HLK Championship. Tất cả quyền được bảo lưu. Liên hệ: info@hlkchampionship.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // Login form functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const loginBtn = document.querySelector('.login-btn');
+            const btnText = loginBtn.querySelector('.btn-text');
+            const btnLoading = loginBtn.querySelector('.btn-loading');
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'flex';
+            loginBtn.disabled = true;
+            
+            // Simulate login process
+            setTimeout(() => {
+                // Hide loading state
+                btnText.style.display = 'block';
+                btnLoading.style.display = 'none';
+                loginBtn.disabled = false;
+                
+                // Show success message (you can replace with actual logic)
+                alert('Đăng nhập thành công!');
+                // Redirect to dashboard or home page
+                // window.location.href = 'index.html';
+            }, 2000);
+        });
+
+                 // Password visibility toggle
+         function togglePassword() {
+             const passwordInput = document.getElementById('password');
+             const eyeIcon = document.querySelector('.eye-icon');
+             const eyeOffIcon = document.querySelector('.eye-off-icon');
+             
+             if (passwordInput.type === 'password') {
+                 passwordInput.type = 'text';
+                 eyeIcon.style.display = 'none';
+                 eyeOffIcon.style.display = 'block';
+             } else {
+                 passwordInput.type = 'password';
+                 eyeIcon.style.display = 'block';
+                 eyeOffIcon.style.display = 'none';
+             }
+         }
+
+         // Profile Dropdown Management (Same as index.html)
+         let isDropdownOpen = false;
+         
+         function setCookie(name, value, days) {
+             const expires = new Date();
+             expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+             document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+         }
+         
+         function getCookie(name) {
+             const nameEQ = name + "=";
+             const ca = document.cookie.split(';');
+             for(let i = 0; i < ca.length; i++) {
+                 let c = ca[i];
+                 while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                 if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+             }
+             return null;
+         }
+         
+         function deleteCookie(name) {
+             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+         }
+         
+         function checkLoginStatus() {
+             const userToken = getCookie('hlk_user_token');
+             const userName = getCookie('hlk_user_name');
+             const userClass = getCookie('hlk_user_class');
+             const dropdownContainer = document.querySelector('.profile-dropdown-container');
+             
+             if (userToken && userName) {
+                 dropdownContainer.classList.add('logged-in');
+                 updateUserInfo(userName, userClass);
+             } else {
+                 dropdownContainer.classList.remove('logged-in');
+             }
+         }
+         
+         function updateUserInfo(name, className) {
+             const userNameElement = document.getElementById('userName');
+             const userClassElement = document.getElementById('userClass');
+             const userInitialsElement = document.getElementById('userInitials');
+             
+             if (userNameElement) userNameElement.textContent = name;
+             if (userClassElement) userClassElement.textContent = className || 'Học viên HLK';
+             if (userInitialsElement) {
+                 const initials = name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().substring(0, 2);
+                 userInitialsElement.textContent = initials;
+             }
+         }
+         
+         function toggleProfileDropdown() {
+             const dropdown = document.querySelector('.profile-dropdown');
+             if (isDropdownOpen) {
+                 closeProfileDropdown();
+             } else {
+                 openProfileDropdown();
+             }
+         }
+         
+         function openProfileDropdown() {
+             const dropdown = document.querySelector('.profile-dropdown');
+             if (dropdown) {
+                 dropdown.classList.add('show');
+                 isDropdownOpen = true;
+             }
+         }
+         
+         function closeProfileDropdown() {
+             const dropdown = document.querySelector('.profile-dropdown');
+             if (dropdown) {
+                 dropdown.classList.remove('show');
+                 isDropdownOpen = false;
+             }
+         }
+         
+         function viewProfile() {
+             alert('Chức năng xem hồ sơ đang được phát triển!');
+             closeProfileDropdown();
+         }
+         
+         function viewTournaments() {
+             alert('Chức năng xem giải đấu đang được phát triển!');
+             closeProfileDropdown();
+         }
+         
+         function viewNotifications() {
+             alert('Chức năng thông báo đang được phát triển!');
+             closeProfileDropdown();
+         }
+         
+         function viewSettings() {
+             alert('Chức năng cài đặt đang được phát triển!');
+             closeProfileDropdown();
+         }
+         
+         function logout() {
+             const confirmLogout = confirm('Bạn có chắc muốn đăng xuất?');
+             if (confirmLogout) {
+                 deleteCookie('hlk_user_token');
+                 deleteCookie('hlk_user_name');
+                 deleteCookie('hlk_user_class');
+                 checkLoginStatus();
+                 closeProfileDropdown();
+                 alert('Đã đăng xuất thành công!');
+             }
+         }
+         
+         document.addEventListener('click', function(event) {
+             const dropdownContainer = document.querySelector('.profile-dropdown-container');
+             if (dropdownContainer && !dropdownContainer.contains(event.target)) {
+                 closeProfileDropdown();
+             }
+         });
+         
+         // Enhanced login functionality with profile update
+         document.addEventListener('DOMContentLoaded', function() {
+             checkLoginStatus();
+             
+             // Override the existing login form handler to include cookie setting
+             const originalLoginHandler = document.getElementById('loginForm').onsubmit;
+             document.getElementById('loginForm').addEventListener('submit', function(e) {
+                 e.preventDefault();
+                 
+                 const loginBtn = document.querySelector('.login-btn');
+                 const btnText = loginBtn.querySelector('.btn-text');
+                 const btnLoading = loginBtn.querySelector('.btn-loading');
+                 
+                 btnText.style.display = 'none';
+                 btnLoading.style.display = 'flex';
+                 loginBtn.disabled = true;
+                 
+                 // Simulate login process
+                 setTimeout(() => {
+                     btnText.style.display = 'block';
+                     btnLoading.style.display = 'none';
+                     loginBtn.disabled = false;
+                     
+                     // Set login cookies (in real app, these would come from server)
+                     setCookie('hlk_user_token', 'demo_token_' + Date.now(), 7);
+                     setCookie('hlk_user_name', 'Học viên HLK', 7);
+                     setCookie('hlk_user_class', 'Lớp 11A2', 7);
+                     
+                     alert('Đăng nhập thành công!');
+                     
+                     // Redirect to home page
+                     setTimeout(() => {
+                         window.location.href = 'index.html';
+                     }, 1000);
+                 }, 2000);
+             });
+         });
+    </script>
+</body>
+</html>
