@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="menu.js"></script>
     <!-- Google Fonts - Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -148,150 +149,8 @@
     </footer>
 
     <script>
-        // Profile Dropdown Management
-        let isDropdownOpen = false;
-        
-        // Cookie utility functions
-        function setCookie(name, value, days) {
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
-        }
-        
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for(let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
-        }
-        
-        function deleteCookie(name) {
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-        }
-        
-        // Check login status and update UI
-        function checkLoginStatus() {
-            const userToken = getCookie('hlk_user_token');
-            const userName = getCookie('hlk_user_name');
-            const userClass = getCookie('hlk_user_class');
-            const dropdownContainer = document.querySelector('.profile-dropdown-container');
-            
-            if (userToken && userName) {
-                // User is logged in
-                dropdownContainer.classList.add('logged-in');
-                updateUserInfo(userName, userClass);
-            } else {
-                // User is not logged in
-                dropdownContainer.classList.remove('logged-in');
-            }
-        }
-        
-        // Update user information in the dropdown
-        function updateUserInfo(name, className) {
-            const userNameElement = document.getElementById('userName');
-            const userClassElement = document.getElementById('userClass');
-            const userInitialsElement = document.getElementById('userInitials');
-            
-            if (userNameElement) userNameElement.textContent = name;
-            if (userClassElement) userClassElement.textContent = className || 'Học viên HLK';
-            if (userInitialsElement) {
-                const initials = name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().substring(0, 2);
-                userInitialsElement.textContent = initials;
-            }
-        }
-        
-        // Toggle profile dropdown
-        function toggleProfileDropdown() {
-            const dropdown = document.querySelector('.profile-dropdown');
-            
-            if (isDropdownOpen) {
-                closeProfileDropdown();
-            } else {
-                openProfileDropdown();
-            }
-        }
-        
-        function openProfileDropdown() {
-            const dropdown = document.querySelector('.profile-dropdown');
-            if (dropdown) {
-                dropdown.classList.add('show');
-                isDropdownOpen = true;
-            }
-        }
-        
-        function closeProfileDropdown() {
-            const dropdown = document.querySelector('.profile-dropdown');
-            if (dropdown) {
-                dropdown.classList.remove('show');
-                isDropdownOpen = false;
-            }
-        }
-        
-        // Profile menu actions
-        function viewProfile() {
-            alert('Chức năng xem hồ sơ đang được phát triển!');
-            closeProfileDropdown();
-        }
-        
-        function viewTournaments() {
-            alert('Chức năng xem giải đấu đang được phát triển!');
-            closeProfileDropdown();
-        }
-        
-        function viewNotifications() {
-            alert('Chức năng thông báo đang được phát triển!');
-            closeProfileDropdown();
-        }
-        
-        function viewSettings() {
-            alert('Chức năng cài đặt đang được phát triển!');
-            closeProfileDropdown();
-        }
-        
-        function logout() {
-            const confirmLogout = confirm('Bạn có chắc muốn đăng xuất?');
-            if (confirmLogout) {
-                // Delete user cookies
-                deleteCookie('hlk_user_token');
-                deleteCookie('hlk_user_name');
-                deleteCookie('hlk_user_class');
-                
-                // Update UI
-                checkLoginStatus();
-                closeProfileDropdown();
-                
-                alert('Đã đăng xuất thành công!');
-            }
-        }
-        
-        // Simulate login (for testing purposes)
-        function simulateLogin() {
-            setCookie('hlk_user_token', 'demo_token_12345', 7);
-            setCookie('hlk_user_name', 'Nguyễn Văn An', 7);
-            setCookie('hlk_user_class', 'Lớp 11A2', 7);
-            checkLoginStatus();
-        }
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdownContainer = document.querySelector('.profile-dropdown-container');
-            if (dropdownContainer && !dropdownContainer.contains(event.target)) {
-                closeProfileDropdown();
-            }
-        });
-        
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoginStatus();
-            
-            // Test login functionality - remove this in production
-            // Uncomment the line below to test logged-in state
-            // simulateLogin();
-        });
+        // Note: Profile dropdown functionality is now handled by menu.js
+        // This script only contains theme-related functionality
     </script>
 </body>
 </html>

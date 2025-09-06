@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Menu - HLK Championship 2025</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+        .test-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-btn:hover {
+            background: #1d4ed8;
+        }
+        .test-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+        .error {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Test Menu System - HLK Championship 2025</h1>
+        <p>Trang này dùng để kiểm tra hệ thống menu dropdown có hoạt động đúng với Apache XAMPP hay không.</p>
+        
+        <h3>Kiểm tra kết nối PHP:</h3>
+        <button class="test-btn" onclick="testSessionAPI()">Test Session API</button>
+        <button class="test-btn" onclick="testLogoutAPI()">Test Logout API</button>
+        
+        <div id="testResult"></div>
+        
+        <h3>Thông tin hệ thống:</h3>
+        <ul>
+            <li><strong>Current URL:</strong> <code id="currentUrl"></code></li>
+            <li><strong>User Agent:</strong> <code id="userAgent"></code></li>
+            <li><strong>PHP Session API:</strong> <code>./php/session.php</code></li>
+            <li><strong>PHP Logout API:</strong> <code>./php/logout.php</code></li>
+        </ul>
+
+        <h3>Hướng dẫn:</h3>
+        <ol>
+            <li>Đảm bảo Apache và MySQL đang chạy trong XAMPP</li>
+            <li>Đảm bảo database <code>hlk_championship_2025</code> đã được tạo</li>
+            <li>Đảm bảo bảng <code>users</code> đã được import từ <code>users.sql</code></li>
+            <li>Kiểm tra file <code>php/db_connect.php</code> có thông tin kết nối database đúng</li>
+            <li>Truy cập <code>http://localhost/hlk_championship_2025/index.html</code> để test menu</li>
+        </ol>
+    </div>
+
+    <script>
+        // Display current URL and user agent
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('userAgent').textContent = navigator.userAgent;
+
+        async function testSessionAPI() {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.innerHTML = '<p>Đang kiểm tra Session API...</p>';
+
+            try {
+                const response = await fetch('./php/session.php', {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="test-result success">
+                            <h4>✅ Session API Test - SUCCESS</h4>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Response:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="test-result error">
+                            <h4>❌ Session API Test - ERROR</h4>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Response:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="test-result error">
+                        <h4>❌ Session API Test - NETWORK ERROR</h4>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p>Kiểm tra xem Apache có đang chạy không và đường dẫn file PHP có đúng không.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function testLogoutAPI() {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.innerHTML = '<p>Đang kiểm tra Logout API...</p>';
+
+            try {
+                const response = await fetch('./php/logout.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="test-result success">
+                            <h4>✅ Logout API Test - SUCCESS</h4>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Response:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="test-result error">
+                            <h4>❌ Logout API Test - ERROR</h4>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Response:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="test-result error">
+                        <h4>❌ Logout API Test - NETWORK ERROR</h4>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p>Kiểm tra xem Apache có đang chạy không và đường dẫn file PHP có đúng không.</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
