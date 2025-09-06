@@ -145,7 +145,7 @@
                         <p>Tạo tài khoản mới để tham gia HLK Championship 2025</p>
                     </div>
 
-                    <form class="login-form register-form" id="registerForm">
+                    <form class="login-form register-form" id="registerForm" method="post" action="php/register.php">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="fullName">Họ và tên *</label>
@@ -168,7 +168,7 @@
                                     name="studentId" 
                                     required
                                     placeholder="Ví dụ: 210221"
-                                    pattern="^{0,3}[0-9]{4,8}$"
+                                    pattern="^[A-Za-z]{0,3}[0-9]{4,8}$"
                                 >
                                 <span class="form-error" id="studentId-error"></span>
                             </div>
@@ -179,18 +179,18 @@
                                 <label for="class">Lớp *</label>
                                 <select id="class" name="class" required>
                                     <option value="">Chọn lớp</option>
-                                    <option value="10A1">10A1</option>
-                                    <option value="10A2">10A2</option>
-                                    <option value="10A3">10A3</option>
-                                    <option value="10A4">10A4</option>
-                                    <option value="11A1">11A1</option>
-                                    <option value="11A2">11A2</option>
-                                    <option value="11A3">11A3</option>
-                                    <option value="11A4">11A4</option>
-                                    <option value="12A1">12A1</option>
-                                    <option value="12A2">12A2</option>
-                                    <option value="12A3">12A3</option>
-                                    <option value="12A4">12A4</option>
+                                    <option value="Van">Văn</option>
+                                    <option value="Toan">Toán</option>
+                                    <option value="Li">Lí</option>
+                                    <option value="Hoa">Hóa</option>
+                                    <option value="Sinh">Sinh</option>
+                                    <option value="Anh">Anh</option>
+                                    <option value="Anh1">Anh 1</option>
+                                    <option value="Anh2">Anh 2</option>
+                                    <option value="Tin">Tin</option>
+                                    <option value="Su">Sử</option>
+                                    <option value="Nguon1">Nguồn 1</option>
+                                    <option value="Nguon2">Nguồn 2</option>
                                 </select>
                                 <span class="form-error" id="class-error"></span>
                             </div>
@@ -205,7 +205,7 @@
                                     <option value="K31">K31</option>
                                     <option value="K32">K32</option>
                                 </select>
-                                <span class="form-error" id="class-error"></span>
+                                <span class="form-error" id="grade-error"></span>
                             </div>
                         </div>
 
@@ -393,314 +393,228 @@
             <p>© 2025 HLK Championship. Tất cả quyền được bảo lưu. Liên hệ: info@hlkchampionship.com</p>
         </div>
     </footer>
-
     <script>
-        // Form validation functions
+        /* -------------------- VALIDATION -------------------- */
         function validateForm() {
-            let isValid = true;
-            const errors = {};
+        let isValid = true;
+        const errors = {};
 
-            // Clear previous errors
-            document.querySelectorAll('.form-error').forEach(error => {
-                error.textContent = '';
-                error.classList.remove('show');
-            });
+        // clear
+        document.querySelectorAll('.form-error').forEach(el => {
+            el.textContent = '';
+            el.classList.remove('show');
+        });
 
-            // Full name validation
-            const fullName = document.getElementById('fullName').value.trim();
-            if (!fullName) {
-                errors.fullName = 'Vui lòng nhập họ và tên';
-                isValid = false;
-            } else if (fullName.length < 2) {
-                errors.fullName = 'Họ tên phải có ít nhất 2 ký tự';
-                isValid = false;
-            }
+        // full name
+        const fullName = document.getElementById('fullName').value.trim();
+        if (!fullName) { errors.fullName = 'Vui lòng nhập họ và tên'; isValid = false; }
+        else if (fullName.length < 2) { errors.fullName = 'Họ tên phải có ít nhất 2 ký tự'; isValid = false; }
 
-            // Student ID validation
-            const studentId = document.getElementById('studentId').value.trim();
-            const studentIdPattern = /^[A-Za-z]{0,3}[0-9]{4,8}$/;
-            if (!studentId) {
-                errors.studentId = 'Vui lòng nhập mã số học sinh';
-                isValid = false;
-            } else if (!studentIdPattern.test(studentId)) {
-                errors.studentId = 'Mã số học sinh không đúng định dạng';
-                isValid = false;
-            }
+        // student id (cho phép 0–3 ký tự A-Z + 4–8 số)
+        const studentId = document.getElementById('studentId').value.trim();
+        const studentIdPattern = /^[A-Za-z]{0,3}[0-9]{4,8}$/;
+        if (!studentId) { errors.studentId = 'Vui lòng nhập mã số học sinh'; isValid = false; }
+        else if (!studentIdPattern.test(studentId)) { errors.studentId = 'Mã số học sinh không đúng định dạng'; isValid = false; }
 
-            // Class validation
-            const classValue = document.getElementById('class').value;
-            if (!classValue) {
-                errors.class = 'Vui lòng chọn lớp';
-                isValid = false;
-            }
+        // class
+        const classValue = document.getElementById('class').value;
+        if (!classValue) { errors.class = 'Vui lòng chọn lớp'; isValid = false; }
 
-            // Email validation
-            const email = document.getElementById('email').value.trim();
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!email) {
-                errors.email = 'Vui lòng nhập email';
-                isValid = false;
-            } else if (!emailPattern.test(email)) {
-                errors.email = 'Email không đúng định dạng';
-                isValid = false;
-            }
+        // grade
+        const grade = document.getElementById('grade').value;
+        const gradePattern = /^(K28|K29|K30|K31|K32)$/;
+        if (!grade) { errors.grade = 'Vui lòng chọn khoá'; isValid = false; }
+        else if (!gradePattern.test(grade)) { errors.grade = 'Khoá phải là K28, K29, K30, K31 hoặc K32'; isValid = false; }
 
-            // Username validation
-            const username = document.getElementById('username').value.trim();
-            const usernamePattern = /^[a-zA-Z0-9_]{4,20}$/;
-            if (!username) {
-                errors.username = 'Vui lòng nhập tên đăng nhập';
-                isValid = false;
-            } else if (!usernamePattern.test(username)) {
-                errors.username = 'Tên đăng nhập chỉ chứa chữ cái, số và _ (4-20 ký tự)';
-                isValid = false;
-            }
+        // email
+        const email = document.getElementById('email').value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) { errors.email = 'Vui lòng nhập email'; isValid = false; }
+        else if (!emailPattern.test(email)) { errors.email = 'Email không đúng định dạng'; isValid = false; }
 
-            // Grade validation (optional)
-            const grade = document.getElementById('grade').value.trim();
-            const gradePattern = /^(K28|K29|K30|K31|K32)$/;
-            if (grade && !gradePattern.test(grade)) {
-                errors.grade = 'Khối phải là K28, K29, K30, K31 hoặc K32';
-                isValid = false;
-            }
+        // username
+        const username = document.getElementById('username').value.trim();
+        const usernamePattern = /^[a-zA-Z0-9_]{4,20}$/;
+        if (!username) { errors.username = 'Vui lòng nhập tên đăng nhập'; isValid = false; }
+        else if (!usernamePattern.test(username)) { errors.username = 'Tên đăng nhập chỉ chứa chữ cái, số và _ (4-20 ký tự)'; isValid = false; }
 
-            // Password validation
-            const password = document.getElementById('password').value;
-            if (!password) {
-                errors.password = 'Vui lòng nhập mật khẩu';
-                isValid = false;
-            } else if (password.length < 6) {
-                errors.password = 'Mật khẩu phải có ít nhất 6 ký tự';
-                isValid = false;
-            }
+        // password
+        const password = document.getElementById('password').value;
+        if (!password) { errors.password = 'Vui lòng nhập mật khẩu'; isValid = false; }
+        else if (password.length < 6) { errors.password = 'Mật khẩu phải có ít nhất 6 ký tự'; isValid = false; }
 
-            // Confirm password validation
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            if (!confirmPassword) {
-                errors.confirmPassword = 'Vui lòng xác nhận mật khẩu';
-                isValid = false;
-            } else if (password !== confirmPassword) {
-                errors.confirmPassword = 'Mật khẩu xác nhận không khớp';
-                isValid = false;
-            }
+        // confirm password
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (!confirmPassword) { errors.confirmPassword = 'Vui lòng xác nhận mật khẩu'; isValid = false; }
+        else if (password !== confirmPassword) { errors.confirmPassword = 'Mật khẩu xác nhận không khớp'; isValid = false; }
 
-            // Terms validation
-            const terms = document.getElementById('terms').checked;
-            if (!terms) {
-                errors.terms = 'Vui lòng đồng ý với thể lệ giải đấu';
-                isValid = false;
-            }
+        // game uid
+        const gameId = document.getElementById('gameId').value.trim();
+        if (!gameId) { errors.gameId = 'Vui lòng nhập UID trong game'; isValid = false; }
 
-            // Display errors
-            Object.keys(errors).forEach(field => {
-                const errorElement = document.getElementById(field + '-error');
-                if (errorElement) {
-                    errorElement.textContent = errors[field];
-                    errorElement.classList.add('show');
-                }
-            });
-
-            return isValid;
+        // terms
+        if (!document.getElementById('terms').checked) {
+            errors.terms = 'Vui lòng đồng ý với thể lệ giải đấu';
+            isValid = false;
         }
 
-        // Register form functionality
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!validateForm()) {
+        // render errors
+        for (const k in errors) {
+            const el = document.getElementById(k + '-error');
+            if (el) { el.textContent = errors[k]; el.classList.add('show'); }
+        }
+
+        return isValid;
+        }
+
+        /* -------------------- SUBMIT -------------------- */
+        const formEl = document.getElementById('registerForm');
+        formEl.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        const registerBtn = document.querySelector('.login-btn');
+        const btnText = registerBtn.querySelector('.btn-text');
+        const btnLoading = registerBtn.querySelector('.btn-loading');
+
+        // loading on
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'flex';
+        registerBtn.disabled = true;
+
+        try {
+            const formData = new FormData(formEl);
+
+            // optional: mark ajax for server
+            const resp = await fetch(formEl.action || 'php/register.php', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin'
+            });
+
+            // fallback khi server trả HTML (không JSON)
+            const contentType = resp.headers.get('Content-Type') || '';
+            if (!contentType.includes('application/json')) {
+            // nếu server render trang thành công → chuyển hướng sang login
+            if (resp.ok) {
+                window.location.href = 'login.html';
                 return;
             }
-            
-            const registerBtn = document.querySelector('.login-btn');
-            const btnText = registerBtn.querySelector('.btn-text');
-            const btnLoading = registerBtn.querySelector('.btn-loading');
-            
-            // Show loading state
-            btnText.style.display = 'none';
-            btnLoading.style.display = 'flex';
-            registerBtn.disabled = true;
-            
-            // Simulate registration process
-            setTimeout(() => {
-                // Hide loading state
-                btnText.style.display = 'block';
-                btnLoading.style.display = 'none';
-                registerBtn.disabled = false;
-                
-                // Show success message (you can replace with actual logic)
-                alert('Đăng ký thành công! Vui lòng kiểm tra email để kích hoạt tài khoản.');
-                // Redirect to login page
-                // window.location.href = 'login.html';
-            }, 2500);
+            throw new Error('Đăng ký thất bại');
+            }
+
+            const data = await resp.json();
+
+            if (data.success) {
+            // ưu tiên redirect server gửi
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                window.location.href = 'login.html';
+            }
+            return;
+            }
+
+            // hiển thị lỗi field từ server: { errors: { field: 'message', ... }, message: '...' }
+            if (data.errors && typeof data.errors === 'object') {
+            for (const k in data.errors) {
+                const el = document.getElementById(k + '-error');
+                if (el) { el.textContent = data.errors[k]; el.classList.add('show'); }
+            }
+            }
+
+            if (data.message) {
+            alert(data.message); // thông báo tổng quát (nếu cần)
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+        } finally {
+            // loading off
+            btnText.style.display = 'block';
+            btnLoading.style.display = 'none';
+            registerBtn.disabled = false;
+        }
         });
 
-        // Password visibility toggle
+        /* -------------------- PASSWORD TOGGLE -------------------- */
         function togglePassword(fieldId) {
-            const passwordInput = document.getElementById(fieldId);
-            const eyeIcon = passwordInput.parentElement.querySelector('.eye-icon');
-            const eyeOffIcon = passwordInput.parentElement.querySelector('.eye-off-icon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.style.display = 'none';
-                eyeOffIcon.style.display = 'block';
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.style.display = 'block';
-                eyeOffIcon.style.display = 'none';
-            }
+        const input = document.getElementById(fieldId);
+        const eye = input.parentElement.querySelector('.eye-icon');
+        const eyeOff = input.parentElement.querySelector('.eye-off-icon');
+        const isPwd = input.type === 'password';
+        input.type = isPwd ? 'text' : 'password';
+        eye.style.display = isPwd ? 'none' : 'block';
+        eyeOff.style.display = isPwd ? 'block' : 'none';
         }
 
-        // Real-time validation for username
-        document.getElementById('username').addEventListener('input', function() {
-            const username = this.value.trim();
-            const errorElement = document.getElementById('username-error');
-            const usernamePattern = /^[a-zA-Z0-9_]{4,20}$/;
-            
-            if (username && !usernamePattern.test(username)) {
-                errorElement.textContent = 'Tên đăng nhập chỉ chứa chữ cái, số và _ (4-20 ký tự)';
-                errorElement.classList.add('show');
-            } else {
-                errorElement.textContent = '';
-                errorElement.classList.remove('show');
-            }
+        /* -------------------- REALTIME CHECKS -------------------- */
+        document.getElementById('username').addEventListener('input', function () {
+        const v = this.value.trim();
+        const el = document.getElementById('username-error');
+        const re = /^[a-zA-Z0-9_]{4,20}$/;
+        if (v && !re.test(v)) { el.textContent = 'Tên đăng nhập chỉ chứa chữ cái, số và _ (4-20 ký tự)'; el.classList.add('show'); }
+        else { el.textContent = ''; el.classList.remove('show'); }
         });
 
-        // Real-time validation for password confirmation
-        document.getElementById('confirmPassword').addEventListener('input', function() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = this.value;
-            const errorElement = document.getElementById('confirmPassword-error');
-            
-                         if (confirmPassword && password !== confirmPassword) {
-                 errorElement.textContent = 'Mật khẩu xác nhận không khớp';
-                 errorElement.classList.add('show');
-             } else {
-                 errorElement.textContent = '';
-                 errorElement.classList.remove('show');
-             }
-         });
+        document.getElementById('confirmPassword').addEventListener('input', function () {
+        const pw = document.getElementById('password').value;
+        const cpw = this.value;
+        const el = document.getElementById('confirmPassword-error');
+        if (cpw && pw !== cpw) { el.textContent = 'Mật khẩu xác nhận không khớp'; el.classList.add('show'); }
+        else { el.textContent = ''; el.classList.remove('show'); }
+        });
 
-         // Profile Dropdown Management (Same as other pages)
-         let isDropdownOpen = false;
-         
-         function setCookie(name, value, days) {
-             const expires = new Date();
-             expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-             document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
-         }
-         
-         function getCookie(name) {
-             const nameEQ = name + "=";
-             const ca = document.cookie.split(';');
-             for(let i = 0; i < ca.length; i++) {
-                 let c = ca[i];
-                 while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                 if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-             }
-             return null;
-         }
-         
-         function deleteCookie(name) {
-             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-         }
-         
-         function checkLoginStatus() {
-             const userToken = getCookie('hlk_user_token');
-             const userName = getCookie('hlk_user_name');
-             const userClass = getCookie('hlk_user_class');
-             const dropdownContainer = document.querySelector('.profile-dropdown-container');
-             
-             if (userToken && userName) {
-                 dropdownContainer.classList.add('logged-in');
-                 updateUserInfo(userName, userClass);
-             } else {
-                 dropdownContainer.classList.remove('logged-in');
-             }
-         }
-         
-         function updateUserInfo(name, className) {
-             const userNameElement = document.getElementById('userName');
-             const userClassElement = document.getElementById('userClass');
-             const userInitialsElement = document.getElementById('userInitials');
-             
-             if (userNameElement) userNameElement.textContent = name;
-             if (userClassElement) userClassElement.textContent = className || 'Học viên HLK';
-             if (userInitialsElement) {
-                 const initials = name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().substring(0, 2);
-                 userInitialsElement.textContent = initials;
-             }
-         }
-         
-         function toggleProfileDropdown() {
-             const dropdown = document.querySelector('.profile-dropdown');
-             if (isDropdownOpen) {
-                 closeProfileDropdown();
-             } else {
-                 openProfileDropdown();
-             }
-         }
-         
-         function openProfileDropdown() {
-             const dropdown = document.querySelector('.profile-dropdown');
-             if (dropdown) {
-                 dropdown.classList.add('show');
-                 isDropdownOpen = true;
-             }
-         }
-         
-         function closeProfileDropdown() {
-             const dropdown = document.querySelector('.profile-dropdown');
-             if (dropdown) {
-                 dropdown.classList.remove('show');
-                 isDropdownOpen = false;
-             }
-         }
-         
-         function viewProfile() {
-             alert('Chức năng xem hồ sơ đang được phát triển!');
-             closeProfileDropdown();
-         }
-         
-         function viewTournaments() {
-             alert('Chức năng xem giải đấu đang được phát triển!');
-             closeProfileDropdown();
-         }
-         
-         function viewNotifications() {
-             alert('Chức năng thông báo đang được phát triển!');
-             closeProfileDropdown();
-         }
-         
-         function viewSettings() {
-             alert('Chức năng cài đặt đang được phát triển!');
-             closeProfileDropdown();
-         }
-         
-         function logout() {
-             const confirmLogout = confirm('Bạn có chắc muốn đăng xuất?');
-             if (confirmLogout) {
-                 deleteCookie('hlk_user_token');
-                 deleteCookie('hlk_user_name');
-                 deleteCookie('hlk_user_class');
-                 checkLoginStatus();
-                 closeProfileDropdown();
-                 alert('Đã đăng xuất thành công!');
-             }
-         }
-         
-         document.addEventListener('click', function(event) {
-             const dropdownContainer = document.querySelector('.profile-dropdown-container');
-             if (dropdownContainer && !dropdownContainer.contains(event.target)) {
-                 closeProfileDropdown();
-             }
-         });
-         
-         // Initialize profile status on page load
-         document.addEventListener('DOMContentLoaded', function() {
-             checkLoginStatus();
-         });
-     </script>
+        /* -------------------- PROFILE DROPDOWN (GIỮ NGUYÊN) -------------------- */
+        let isDropdownOpen = false;
+        function setCookie(name, value, days) {
+        const expires = new Date(Date.now() + days*864e5).toUTCString();
+        document.cookie = `${name}=${value};expires=${expires};path=/`;
+        }
+        function getCookie(name) {
+        const nameEQ = name + "=";
+        return document.cookie.split(';').map(s=>s.trim()).find(c=>c.indexOf(nameEQ)===0)?.substring(nameEQ.length) || null;
+        }
+        function deleteCookie(name) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        }
+        function checkLoginStatus() {
+        const tok = getCookie('hlk_user_token');
+        const uname = getCookie('hlk_user_name');
+        const uclass = getCookie('hlk_user_class');
+        const container = document.querySelector('.profile-dropdown-container');
+        if (tok && uname) { container.classList.add('logged-in'); updateUserInfo(uname, uclass); }
+        else { container.classList.remove('logged-in'); }
+        }
+        function updateUserInfo(name, className) {
+        const userNameElement = document.getElementById('userName');
+        const userClassElement = document.getElementById('userClass');
+        const userInitialsElement = document.getElementById('userInitials');
+        if (userNameElement) userNameElement.textContent = name;
+        if (userClassElement) userClassElement.textContent = className || 'Học viên HLK';
+        if (userInitialsElement) userInitialsElement.textContent = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+        }
+        function toggleProfileDropdown(){ isDropdownOpen ? closeProfileDropdown() : openProfileDropdown(); }
+        function openProfileDropdown(){ const d=document.querySelector('.profile-dropdown'); if (d){ d.classList.add('show'); isDropdownOpen = true; } }
+        function closeProfileDropdown(){ const d=document.querySelector('.profile-dropdown'); if (d){ d.classList.remove('show'); isDropdownOpen = false; } }
+        function viewProfile(){ alert('Chức năng xem hồ sơ đang được phát triển!'); closeProfileDropdown(); }
+        function viewTournaments(){ alert('Chức năng xem giải đấu đang được phát triển!'); closeProfileDropdown(); }
+        function viewNotifications(){ alert('Chức năng thông báo đang được phát triển!'); closeProfileDropdown(); }
+        function viewSettings(){ alert('Chức năng cài đặt đang được phát triển!'); closeProfileDropdown(); }
+        function logout(){
+        if (confirm('Bạn có chắc muốn đăng xuất?')) {
+            deleteCookie('hlk_user_token'); deleteCookie('hlk_user_name'); deleteCookie('hlk_user_class');
+            checkLoginStatus(); closeProfileDropdown(); alert('Đã đăng xuất thành công!');
+        }
+        }
+        document.addEventListener('click', (e)=> {
+        const container = document.querySelector('.profile-dropdown-container');
+        if (container && !container.contains(e.target)) closeProfileDropdown();
+        });
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+        </script>
  </body>
  </html>
  
