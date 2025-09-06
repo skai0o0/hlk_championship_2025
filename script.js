@@ -58,4 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add slight delay for staggered animation
         step.style.setProperty('--animation-delay', `${index * 0.1}s`);
     });
+
+    // Initialize dropdown menu
+    initializeDropdownMenu();
 });
