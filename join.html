@@ -375,111 +375,86 @@
             document.getElementById('teamJoinForm').reset();
         }
         
-        // Generate random 6-digit team ID
-        function generateTeamId() {
-            return Math.floor(100000 + Math.random() * 900000).toString();
-        }
-        
-        // Create new team
+        // Create new team using PHP backend
         function createTeam(teamName, teamDescription) {
-            const userToken = getCookie('hlk_user_token');
-            const userName = getCookie('hlk_user_name') || 'Học viên HLK';
-            const userClass = getCookie('hlk_user_class') || 'Lớp chưa xác định';
+            const formData = new FormData();
+            formData.append('action', 'create');
+            formData.append('team_name', teamName);
+            formData.append('team_description', teamDescription);
             
-            if (!userToken) {
-                alert('Vui lòng đăng nhập để tạo đội!');
-                return false;
-            }
-            
-            // Check if user already has a team
-            const existingTeam = localStorage.getItem('hlk_user_team_' + userToken);
-            if (existingTeam) {
-                alert('Bạn đã có đội rồi! Mỗi người chỉ có thể tham gia một đội.');
-                return false;
-            }
-            
-            const teamId = generateTeamId();
-            
-            // Create team object
-            const team = {
-                id: teamId,
-                name: teamName,
-                description: teamDescription,
-                createdAt: new Date().toISOString(),
-                leaderId: userToken,
-                members: [
-                    {
-                        id: userToken,
-                        name: userName,
-                        class: userClass,
-                        role: 'Đội trưởng',
-                        joinedAt: new Date().toISOString()
-                    }
-                ]
-            };
-            
-            // Store team data
-            localStorage.setItem('hlk_team_' + teamId, JSON.stringify(team));
-            localStorage.setItem('hlk_user_team_' + userToken, teamId);
-            
-            // Display team info
-            displayTeamInfo(team);
-            hideCreateTeamForm();
-            
-            return true;
+            fetch('php/team.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayTeamInfo(data.team);
+                    hideCreateTeamForm();
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Lỗi kết nối đến server. Vui lòng thử lại.');
+            });
         }
         
-        // Join existing team
-        function joinTeam(teamId) {
-            const userToken = getCookie('hlk_user_token');
-            const userName = getCookie('hlk_user_name') || 'Học viên HLK';
-            const userClass = getCookie('hlk_user_class') || 'Lớp chưa xác định';
+        // Join existing team using PHP backend
+        function joinTeam(teamCode) {
+            const formData = new FormData();
+            formData.append('action', 'join');
+            formData.append('team_code', teamCode);
             
-            if (!userToken) {
-                alert('Vui lòng đăng nhập để tham gia đội!');
-                return false;
-            }
-            
-            // Check if user already has a team
-            const existingTeam = localStorage.getItem('hlk_user_team_' + userToken);
-            if (existingTeam) {
-                alert('Bạn đã có đội rồi! Mỗi người chỉ có thể tham gia một đội.');
-                return false;
-            }
-            
-            // Get team data
-            const teamData = localStorage.getItem('hlk_team_' + teamId);
-            if (!teamData) {
-                alert('Không tìm thấy đội với mã ' + teamId + '. Vui lòng kiểm tra lại mã đội.');
-                return false;
-            }
-            
-            const team = JSON.parse(teamData);
-            
-            // Check if team is full (7 members max)
-            if (team.members.length >= 7) {
-                alert('Đội đã đầy! Đội chỉ có thể có tối đa 7 thành viên.');
-                return false;
-            }
-            
-            // Add user to team
-            team.members.push({
-                id: userToken,
-                name: userName,
-                class: userClass,
-                role: 'Thành viên',
-                joinedAt: new Date().toISOString()
+            fetch('php/team.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayTeamInfo(data.team);
+                    hideJoinTeamForm();
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Lỗi kết nối đến server. Vui lòng thử lại.');
             });
+        }
+        
+        // Leave team function
+        function leaveTeam() {
+            const confirmLeave = confirm('Bạn có chắc muốn rời khỏi đội?');
+            if (!confirmLeave) return;
             
-            // Update storage
-            localStorage.setItem('hlk_team_' + teamId, JSON.stringify(team));
-            localStorage.setItem('hlk_user_team_' + userToken, teamId);
+            const formData = new FormData();
+            formData.append('action', 'leave');
             
-            // Display team info
-            displayTeamInfo(team);
-            hideJoinTeamForm();
-            
-            return true;
+            fetch('php/team.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('team-info').style.display = 'none';
+                    alert(data.message);
+                    // Reload page to show team options again
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Lỗi kết nối đến server. Vui lòng thử lại.');
+            });
         }
         
         // Display team information
@@ -489,49 +464,62 @@
             
             let membersHtml = '';
             team.members.forEach((member, index) => {
+                const roleText = member.role === 'leader' ? 'Đội trưởng' : 'Thành viên';
+                const joinedDate = new Date(member.joined_at).toLocaleDateString('vi-VN');
                 membersHtml += `
                     <div style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px;">
-                        <strong>Vị trí ${index + 1}: ${member.name}</strong> (${member.role})<br>
-                        <small>Lớp: ${member.class} | Tham gia: ${new Date(member.joinedAt).toLocaleDateString('vi-VN')}</small>
+                        <strong>Vị trí ${index + 1}: ${member.full_name}</strong> (${roleText})<br>
+                        <small>Lớp: ${member.class} | Tham gia: ${joinedDate}</small>
                     </div>
                 `;
             });
             
+            const canInvite = team.member_count < 7;
+            const currentUserRole = team.role; // This comes from getUserTeam function
+            
             teamDetailsDiv.innerHTML = `
                 <div style="margin-bottom: 20px;">
-                    <h4>Tên đội: ${team.name}</h4>
-                    <p><strong>Mã đội:</strong> <span style="color: var(--brand); font-weight: bold; font-size: 18px;">${team.id}</span></p>
-                    ${team.description ? `<p><strong>Mô tả:</strong> ${team.description}</p>` : ''}
-                    <p><strong>Số thành viên:</strong> ${team.members.length}/7</p>
+                    <h4>Tên đội: ${team.team_name}</h4>
+                    <p><strong>Mã đội:</strong> <span style="color: var(--brand); font-weight: bold; font-size: 18px;">${team.team_code}</span></p>
+                    ${team.team_description ? `<p><strong>Mô tả:</strong> ${team.team_description}</p>` : ''}
+                    <p><strong>Số thành viên:</strong> ${team.member_count}/7</p>
                 </div>
                 
                 <h4>Danh sách thành viên:</h4>
                 ${membersHtml}
                 
-                ${team.members.length < 7 ? `
+                ${canInvite ? `
                     <div style="margin-top: 16px; padding: 12px; background: var(--bg-soft); border-radius: 8px;">
                         <strong>Hướng dẫn mời thêm thành viên:</strong><br>
-                        Chia sẻ mã đội <strong>${team.id}</strong> với bạn bè để họ có thể tham gia đội.
+                        Chia sẻ mã đội <strong>${team.team_code}</strong> với bạn bè để họ có thể tham gia đội.
                     </div>
                 ` : ''}
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="leaveTeam()">
+                        ${currentUserRole === 'leader' ? 'Giải tán đội' : 'Rời khỏi đội'}
+                    </button>
+                </div>
             `;
             
             teamInfoDiv.style.display = 'block';
+            
+            // Hide the team creation/join options
+            document.querySelector('.grid').style.display = 'none';
         }
         
         // Check if user already has a team on load
         function checkExistingTeam() {
-            const userToken = getCookie('hlk_user_token');
-            if (!userToken) return;
-            
-            const teamId = localStorage.getItem('hlk_user_team_' + userToken);
-            if (teamId) {
-                const teamData = localStorage.getItem('hlk_team_' + teamId);
-                if (teamData) {
-                    const team = JSON.parse(teamData);
-                    displayTeamInfo(team);
+            fetch('php/team.php?action=get_team')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.team) {
+                    displayTeamInfo(data.team);
                 }
-            }
+            })
+            .catch(error => {
+                console.error('Error checking existing team:', error);
+            });
         }
         
         // Form submission handlers
@@ -548,25 +536,21 @@
                     return;
                 }
                 
-                if (createTeam(teamName, teamDescription)) {
-                    alert('Tạo đội thành công! Mã đội của bạn đã được hiển thị bên dưới.');
-                }
+                createTeam(teamName, teamDescription);
             });
             
             // Join team form handler
             document.getElementById('teamJoinForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                const teamId = document.getElementById('teamId').value.trim();
+                const teamCode = document.getElementById('teamId').value.trim();
                 
-                if (!teamId || teamId.length !== 6) {
+                if (!teamCode || teamCode.length !== 6) {
                     alert('Vui lòng nhập mã đội hợp lệ (6 chữ số)!');
                     return;
                 }
                 
-                if (joinTeam(teamId)) {
-                    alert('Tham gia đội thành công!');
-                }
+                joinTeam(teamCode);
             });
         });
         
