@@ -71,6 +71,10 @@ class MenuManager {
             console.log('MenuManager: Checking login status...');
             console.log('MenuManager: Current URL:', window.location.href);
             
+            // First, let's check what cookies we have
+            const cookies = this.getCookies();
+            console.log('MenuManager: Available cookies:', cookies);
+            
             const response = await fetch('./php/session.php', {
                 method: 'GET',
                 credentials: 'same-origin', // Include cookies
@@ -94,22 +98,73 @@ class MenuManager {
                 this.renderLoggedInMenu(data.user);
                 this.dropdownContainer.classList.add('logged-in');
             } else {
-                // User is not logged in
-                console.log('MenuManager: User is not logged in');
-                this.renderLoggedOutMenu();
-                this.dropdownContainer.classList.remove('logged-in');
+                // Try fallback cookie check
+                console.log('MenuManager: Session API says not logged in, trying cookie fallback...');
+                const cookieUser = this.checkCookieLogin();
+                if (cookieUser) {
+                    console.log('MenuManager: Found user via cookies:', cookieUser.name);
+                    this.renderLoggedInMenu(cookieUser);
+                    this.dropdownContainer.classList.add('logged-in');
+                } else {
+                    // User is not logged in
+                    console.log('MenuManager: User is not logged in (no session, no valid cookies)');
+                    this.renderLoggedOutMenu();
+                    this.dropdownContainer.classList.remove('logged-in');
+                }
             }
         } catch (error) {
             console.error('MenuManager: Error checking login status:', error);
-            // Fallback to logged out state
-            this.renderLoggedOutMenu();
-            this.dropdownContainer.classList.remove('logged-in');
+            
+            // Try fallback cookie check even on error
+            console.log('MenuManager: API failed, trying cookie fallback...');
+            const cookieUser = this.checkCookieLogin();
+            if (cookieUser) {
+                console.log('MenuManager: Found user via cookies (fallback):', cookieUser.name);
+                this.renderLoggedInMenu(cookieUser);
+                this.dropdownContainer.classList.add('logged-in');
+            } else {
+                // Fallback to logged out state
+                this.renderLoggedOutMenu();
+                this.dropdownContainer.classList.remove('logged-in');
+            }
             
             // Only show error in development (localhost)
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 console.warn('MenuManager: Development mode - API error details:', error.message);
             }
         }
+    }
+
+    /**
+     * Get all cookies as an object
+     */
+    getCookies() {
+        const cookies = {};
+        document.cookie.split(';').forEach(cookie => {
+            const [name, value] = cookie.trim().split('=');
+            if (name && value) {
+                cookies[name] = decodeURIComponent(value);
+            }
+        });
+        return cookies;
+    }
+
+    /**
+     * Check login status from cookies as fallback
+     */
+    checkCookieLogin() {
+        const cookies = this.getCookies();
+        
+        // Check if we have required cookies
+        if (cookies.hlk_user_name && cookies.hlk_user_class) {
+            return {
+                name: cookies.hlk_user_name,
+                class: cookies.hlk_user_class,
+                grade: cookies.hlk_user_grade || 'N/A'
+            };
+        }
+        
+        return null;
     }
 
     /**
@@ -339,14 +394,66 @@ class MenuManager {
     refresh() {
         this.checkLoginStatusAndRender();
     }
+
+    /**
+     * Debug function to show current login status
+     */
+    debug() {
+        console.log('=== MenuManager Debug Info ===');
+        console.log('Dropdown container:', this.dropdownContainer);
+        console.log('Profile dropdown:', this.profileDropdown);
+        console.log('Is dropdown open:', this.isDropdownOpen);
+        console.log('Available cookies:', this.getCookies());
+        console.log('Cookie login check:', this.checkCookieLogin());
+        console.log('===============================');
+    }
 }
 
 // Create global instance
 const menuManager = new MenuManager();
 
-// Global function for backward compatibility
+// Global functions for backward compatibility and debugging
 function toggleProfileDropdown() {
     menuManager.toggleDropdown();
+}
+
+function debugMenu() {
+    menuManager.debug();
+}
+
+function refreshMenu() {
+    menuManager.refresh();
+}
+
+// For development: add to window object for easy access in console
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    window.menuManager = menuManager;
+    window.debugMenu = debugMenu;
+    window.refreshMenu = refreshMenu;
+    
+    // Test function to simulate login with cookies
+    window.simulateLogin = function() {
+        document.cookie = "hlk_user_id=1; path=/";
+        document.cookie = "hlk_user_name=Nguyễn Văn Test; path=/";
+        document.cookie = "hlk_user_class=12A1; path=/";
+        document.cookie = "hlk_user_grade=K31; path=/";
+        document.cookie = "hlk_user_token=test_token_123; path=/";
+        console.log('MenuManager: Test cookies set, refreshing menu...');
+        menuManager.refresh();
+    };
+    
+    // Test function to clear login cookies
+    window.clearLoginCookies = function() {
+        document.cookie = "hlk_user_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        document.cookie = "hlk_user_name=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        document.cookie = "hlk_user_class=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        document.cookie = "hlk_user_grade=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        document.cookie = "hlk_user_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        console.log('MenuManager: Test cookies cleared, refreshing menu...');
+        menuManager.refresh();
+    };
+    
+    console.log('MenuManager: Development mode - menuManager, debugMenu(), refreshMenu(), simulateLogin(), and clearLoginCookies() available in console');
 }
 
 // Export for module usage (if needed)

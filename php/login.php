@@ -57,9 +57,11 @@ $_SESSION['hlk_user_id']    = $user['id'];
 $_SESSION['hlk_user_name']  = $user['full_name'];
 $_SESSION['hlk_user_class'] = $user['class'];
 
-// Có thể set cookie token nếu muốn (7 ngày)
+// Set cookies for persistent login (7 ngày)
+setcookie("hlk_user_id", (string)$user['id'], time() + 604800, "/");
 setcookie("hlk_user_token", bin2hex(random_bytes(16)), time() + 604800, "/");
 setcookie("hlk_user_name", $user['full_name'], time() + 604800, "/");
 setcookie("hlk_user_class", $user['class'], time() + 604800, "/");
+setcookie("hlk_user_grade", $user['grade'], time() + 604800, "/");
 
 json_ok($user);

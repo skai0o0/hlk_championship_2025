@@ -19,12 +19,12 @@ function json_end(array $payload, int $status = 200): void {
 
 /**
  * Lấy user_id từ session/cookie (nếu bạn có set)
- * - Ưu tiên $_SESSION['user_id']
+ * - Ưu tiên $_SESSION['hlk_user_id'] (với prefix hlk_)
  * - Fallback cookie 'hlk_user_id' (số nguyên)
  */
 function current_user_id(): ?int {
-    if (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id'])) {
-        return (int)$_SESSION['user_id'];
+    if (isset($_SESSION['hlk_user_id']) && is_numeric($_SESSION['hlk_user_id'])) {
+        return (int)$_SESSION['hlk_user_id'];
     }
     if (!empty($_COOKIE['hlk_user_id']) && ctype_digit($_COOKIE['hlk_user_id'])) {
         return (int)$_COOKIE['hlk_user_id'];
