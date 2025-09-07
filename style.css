@@ -1273,29 +1273,6 @@ a:focus,
 }
 
 /* Additional styles for menu.js compatibility */
-.dropdown-menu {
-  padding: 8px 0;
-}
-
-.auth-menu {
-  padding: 8px 0;
-}
-
-.login-item, .register-item {
-  color: var(--text) !important;
-}
-
-.login-item:hover, .register-item:hover {
-  background: var(--bg-soft);
-  color: var(--brand) !important;
-}
-
-.register-item {
-  border-top: 1px solid var(--border);
-  margin-top: 4px;
-  padding-top: 16px !important;
-}
-
 .user-initials {
   font-weight: 700;
   color: white;
@@ -1306,11 +1283,4 @@ a:focus,
   font-size: 12px;
   color: var(--muted);
   margin: 0;
-}
-
-/* Logout item specific styling */
-.logout-item {
-  border-top: 1px solid var(--border);
-  margin-top: 4px;
-  padding-top: 16px !important;
 }

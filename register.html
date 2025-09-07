@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/login.css">
     <script src="script.js"></script>
+    <script src="menu.js"></script>
     <!-- Google Fonts - Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,28 +35,6 @@
                 </div>
                 
                 <div class="navbar-right">
-                    <div class="profile-dropdown-container">
-                        <button
-                            class="navbar-btn profile-btn"
-                            title="Profile"
-                            aria-expanded="false"
-                            aria-controls="profileMenu"
-                            onclick="toggleProfileDropdown()">
-                            <!-- icon user giữ nguyên -->
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-                                    stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="12" cy="7" r="4"
-                                    stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-
-                        <!-- 1 dropdown duy nhất, nội dung render theo trạng thái -->
-                        <div class="profile-dropdown" id="profileMenu" role="menu"></div>
-                    </div>
                     <button class="navbar-btn theme-btn" title="Toggle Theme" onclick="toggleTheme()">
                         <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
