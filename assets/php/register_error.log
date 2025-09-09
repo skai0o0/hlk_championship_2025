@@ -1,0 +1,10 @@
+[09-Sep-2025 00:26:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/hlkchamp/public_html/php/register.php:90
+Stack trace:
+#0 {main}
+  thrown in /home/hlkchamp/public_html/php/register.php on line 90
+[09-Sep-2025 00:26:55 UTC] PHP Stack trace:
+[09-Sep-2025 00:26:55 UTC] PHP   1. newrelic_exception_handler($exception = class Error { protected $message = 'Call to undefined method mysqli_stmt::get_result()'; private $string = 'Error: Call to undefined method mysqli_stmt::get_result() in /home/hlkchamp/public_html/php/register.php:90\nStack trace:\n#0 {main}'; protected $code = 0; protected $file = '/home/hlkchamp/public_html/php/register.php'; protected $line = 90; private $trace = []; private $previous = NULL; public $xdebug_message = '<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Error: Call to undefined method mysqli_stmt::get_result() in /home/hlkchamp/public_html/php/register.php on line <i>90</i></th></tr>\n<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>\n<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#ee'... }) Unknown:0
+[09-Sep-2025 00:26:55 UTC] [SHUTDOWN] Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/hlkchamp/public_html/php/register.php:90
+Stack trace:
+#0 {main}
+  thrown @ /home/hlkchamp/public_html/php/register.php:90

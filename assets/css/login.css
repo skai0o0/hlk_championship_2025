@@ -1,0 +1,648 @@
+/* Login Page Specific Styles - HLK Championship 2025 */
+
+/* Main login layout */
+.login-main {
+    min-height: calc(100vh - 160px);
+    padding: 40px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+    align-items: start;
+}
+
+/* Login Card */
+.login-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.08), 
+                0 2px 8px 0 rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out 0.2s forwards;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Enhanced dark theme card shadows */
+[data-theme="dark"] .login-card {
+    box-shadow: 0 4px 16px 0 rgba(59, 130, 246, 0.12), 
+                0 2px 8px 0 rgba(16, 185, 129, 0.08),
+                0 1px 4px 0 rgba(255, 255, 255, 0.02);
+}
+
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+}
+
+/* Login Header */
+.login-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 8px;
+}
+
+.login-header p {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Form Styles */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.form-group input {
+    background: var(--bg-soft);
+    border: 2px solid var(--border);
+    color: var(--text);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: var(--brand);
+    background: var(--card);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group input::placeholder {
+    color: var(--muted);
+}
+
+/* Password Input Container */
+.password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-container input {
+    width: 100%;
+    padding-right: 48px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    color: var(--brand);
+    background: var(--bg-soft);
+}
+
+.password-toggle .eye-off-icon {
+    display: none;
+}
+
+/* Form Options */
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+/* Custom Checkbox */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text);
+    gap: 8px;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 18px;
+    width: 18px;
+    background-color: var(--bg-soft);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-container:hover .checkmark {
+    border-color: var(--brand);
+    background-color: var(--card);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--brand);
+    border-color: var(--brand);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Forgot Password Link */
+.forgot-password {
+    color: var(--brand);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.forgot-password:hover {
+    color: var(--brand-2);
+    text-decoration: underline;
+}
+
+/* Login Button */
+.login-btn {
+    position: relative;
+    margin-top: 8px;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.login-btn .btn-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--brand);
+    color: white;
+    border-radius: 8px;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Divider */
+.login-divider {
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+    position: relative;
+}
+
+.login-divider::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.login-divider span {
+    padding: 0 16px;
+    color: var(--muted);
+    font-size: 14px;
+    background: var(--card);
+}
+
+/* Social Login */
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.google-btn {
+    border-color: #dadce0;
+    color: #3c4043;
+}
+
+.google-btn:hover {
+    background: #f8f9fa;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.facebook-btn {
+    border-color: #1877f2;
+    color: #1877f2;
+}
+
+.facebook-btn:hover {
+    background: rgba(24, 119, 242, 0.05);
+    box-shadow: 0 2px 8px rgba(24, 119, 242, 0.15);
+}
+
+/* Login Footer */
+.login-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.login-footer p {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+}
+
+.register-link {
+    color: var(--brand);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.register-link:hover {
+    color: var(--brand-2);
+    text-decoration: underline;
+}
+
+/* Info Card */
+.login-info {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out 0.4s forwards;
+}
+
+.info-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.03) 0%, rgba(14, 233, 131, 0.02) 100%), var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .info-card {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.03) 100%), var(--card);
+}
+
+.info-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 20px;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.info-list li svg {
+    color: var(--ok);
+    flex-shrink: 0;
+}
+
+/* Form Error Messages */
+.form-error {
+    color: var(--bad);
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.form-error.show {
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 16px;
+    }
+
+    .login-card {
+        padding: 32px 24px;
+    }
+
+    .login-header h1 {
+        font-size: 24px;
+    }
+
+    .social-login {
+        gap: 8px;
+    }
+
+    .social-btn {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-main {
+        padding: 20px 0;
+    }
+
+    .login-container {
+        padding: 12px;
+    }
+
+    .login-card {
+        padding: 24px 20px;
+    }
+
+    .login-header h1 {
+        font-size: 22px;
+    }
+
+    .login-header p {
+        font-size: 13px;
+    }
+
+    .form-group input {
+        padding: 10px 14px;
+    }
+
+    .login-btn {
+        height: 44px;
+    }
+
+    .info-card {
+        padding: 24px 20px;
+    }
+
+    .info-card h3 {
+        font-size: 18px;
+    }
+}
+
+/* Hover effects for the entire login card */
+.login-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12), 
+                0 4px 16px 0 rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .login-card:hover {
+    box-shadow: 0 8px 32px 0 rgba(59, 130, 246, 0.15), 
+                0 4px 16px 0 rgba(16, 185, 129, 0.12),
+                0 2px 8px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Animation for form elements on focus */
+.form-group input:focus ~ label,
+.form-group input:not(:placeholder-shown) ~ label {
+    color: var(--brand);
+}
+
+/* Loading state for the entire form */
+.login-form.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.login-form.loading * {
+    cursor: not-allowed;
+}
+
+/* Registration Form Specific Styles */
+.register-form {
+    gap: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    display: block;
+}
+
+/* Select field styling */
+.form-group select {
+    background: var(--bg-soft);
+    border: 2px solid var(--border);
+    color: var(--text);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.form-group select:focus {
+    border-color: var(--brand);
+    background: var(--card);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group select option {
+    background: var(--card);
+    color: var(--text);
+    padding: 8px;
+}
+
+/* Terms and privacy links */
+.terms-link,
+.privacy-link {
+    color: var(--brand);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.terms-link:hover,
+.privacy-link:hover {
+    color: var(--brand-2);
+    text-decoration: underline;
+}
+
+/* Tournament info section */
+.tournament-info {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.tournament-info h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 12px;
+}
+
+.info-item {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-item strong {
+    color: var(--text);
+    font-weight: 500;
+    min-width: 70px;
+}
+
+/* Enhanced checkbox styling for registration */
+.register-form .checkbox-container {
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+/* Mobile responsive adjustments for registration form */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .register-form {
+        gap: 16px;
+    }
+    
+    .tournament-info {
+        margin-top: 20px;
+        padding-top: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .register-form .checkbox-container {
+        font-size: 12px;
+    }
+    
+    .form-hint {
+        font-size: 11px;
+    }
+    
+    .info-item {
+        font-size: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .info-item strong {
+        min-width: auto;
+    }
+}

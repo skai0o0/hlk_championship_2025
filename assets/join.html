@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="script.js"></script>
+    <script src="menu.js"></script>
+    <!-- Google Fonts - Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Tham gia - HLK Championship 2025</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="navbar-left">
+                    <div class="navbar-logo-container">
+                        <img src="assets/logo_light.png" alt="HLK Championship 2025 Logo" class="logo-light" width="100px">
+                        <img src="assets/logo_dark.png" alt="HLK Championship 2025 Logo" class="logo-dark" width="100px">
+                    </div>
+                </div>
+                
+                <div class="navbar-center">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="#join">Tham gia</a></li>
+                        <li><a href="index.html#rules">Thể lệ</a></li>
+                        <li><a href="index.html#list">Danh sách</a></li>
+                        <li><a href="index.html#news">Bảng tin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="navbar-right">
+                    <div class="profile-dropdown-container">
+                        <button
+                            class="navbar-btn profile-btn"
+                            title="Profile"
+                            aria-expanded="false"
+                            aria-controls="profileMenu"
+                            onclick="toggleProfileDropdown()">
+                            <!-- icon user giữ nguyên -->
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                                    stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4"
+                                    stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+
+                        <!-- 1 dropdown duy nhất, nội dung render theo trạng thái -->
+                        <div class="profile-dropdown" id="profileMenu" role="menu"></div>
+                    </div>
+                    <button class="navbar-btn theme-btn" title="Toggle Theme" onclick="toggleTheme()">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main id="join-nodate" style="display: none;">
+        <div class="container">
+            <div class="card">
+                <h1>Tham gia HLK Championship 2025</h1>
+                <p>Chưa đến thời gian đăng ký tham gia giải đấu. Vui lòng quay lại sau để đăng ký tham gia giải đấu.</p>
+                <div style="margin-top: 24px;">
+                    <a href="register.html" class="btn btn-primary">Đăng ký tài khoản</a>
+                    <a href="index.html" class="btn">Quay lại trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <main id="join-date" style="display: none;">
+        <div class="container">
+            <div class="card">
+                <h1>Tham gia HLK Championship 2025</h1>
+                <p>Đăng ký tham gia giải đấu đã mở! Hãy đăng ký/đăng nhập ngay để không bỏ lỡ cơ hội.</p>
+                <div style="margin-top: 24px;">
+                    <a href="register.html" class="btn btn-primary">Đăng ký</a>
+                    <a href="login.html" class="btn btn-primary">Đăng nhập</a>
+                    <a href="index.html" class="btn">Quay lại trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <main id="join-form" style="display: none;">
+        <div class="container">
+            <div class="card">
+                <h1>Đăng ký tham gia giải đấu</h1>
+                <p>Chào mừng bạn! Bạn đã đăng nhập thành công. Chọn một trong hai tùy chọn bên dưới để tham gia HLK Championship 2025.</p>
+                
+                <div class="grid" style="margin-top: 32px;">
+                    <!-- Create Team Option -->
+                    <div class="card">
+                        <h3>Tạo đội</h3>
+                        <p>Tạo một đội mới với bạn làm đội trưởng. Đội sẽ có 7 vị trí và bạn sẽ được đặt ở vị trí đầu tiên.</p>
+                        <button class="btn btn-primary" onclick="showCreateTeamForm()" style="margin-top: 16px;">Tạo đội mới</button>
+                    </div>
+                    
+                    <!-- Join Team Option -->
+                    <div class="card">
+                        <h3>Tham gia đội</h3>
+                        <p>Tham gia vào một đội đã có sẵn bằng cách nhập mã đội do đội trưởng cung cấp.</p>
+                        <button class="btn btn-primary" onclick="showJoinTeamForm()" style="margin-top: 16px;">Tham gia đội</button>
+                    </div>
+                </div>
+                
+                <!-- Create Team Form -->
+                <div id="create-team-form" style="display: none; margin-top: 32px;">
+                    <div class="card">
+                        <h3>Tạo đội mới</h3>
+                        <form id="teamCreateForm">
+                            <div class="form-group">
+                                <label for="teamName">Tên đội *</label>
+                                <input type="text" id="teamName" name="teamName" required placeholder="Nhập tên đội" maxlength="30">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="teamDescription">Mô tả đội</label>
+                                <textarea id="teamDescription" name="teamDescription" placeholder="Mô tả ngắn về đội (tùy chọn)" rows="3" maxlength="200"></textarea>
+                            </div>
+                            
+                            <div style="margin-top: 24px;">
+                                <button type="submit" class="btn btn-primary">Tạo đội</button>
+                                <button type="button" class="btn" onclick="hideCreateTeamForm()">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Join Team Form -->
+                <div id="join-team-form" style="display: none; margin-top: 32px;">
+                    <div class="card">
+                        <h3>Tham gia đội</h3>
+                        <form id="teamJoinForm">
+                            <div class="form-group">
+                                <label for="teamId">Mã đội *</label>
+                                <input type="text" id="teamId" name="teamId" required placeholder="Nhập mã đội 6 số" pattern="[0-9]{6}" maxlength="6">
+                                <small class="form-hint">Mã đội gồm 6 chữ số do đội trưởng cung cấp</small>
+                            </div>
+                            
+                            <div style="margin-top: 24px;">
+                                <button type="submit" class="btn btn-primary">Tham gia</button>
+                                <button type="button" class="btn" onclick="hideJoinTeamForm()">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Team Info Display -->
+                <div id="team-info" style="display: none; margin-top: 32px;">
+                    <div class="card">
+                        <h3 id="team-info-title">Thông tin đội</h3>
+                        <div id="team-details">
+                            <!-- Team information will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 24px;">
+                    <a href="index.html" class="btn">Quay lại trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <h1>HLK Championship 2025</h1>
+            <p>© 2025 HLK Championship. Tất cả quyền được bảo lưu. Liên hệ: info@hlkchampionship.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // Profile Dropdown Management (Same as other pages)
+        let isDropdownOpen = false;
+        
+        // Cookie utility functions
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        
+        function deleteCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        }
+        
+        // Check login status and update UI
+        function checkLoginStatus() {
+            const userToken = getCookie('hlk_user_token');
+            const userName = getCookie('hlk_user_name');
+            const userClass = getCookie('hlk_user_class');
+            const dropdownContainer = document.querySelector('.profile-dropdown-container');
+            
+            if (userToken && userName) {
+                // User is logged in
+                dropdownContainer.classList.add('logged-in');
+                updateUserInfo(userName, userClass);
+            } else {
+                // User is not logged in
+                dropdownContainer.classList.remove('logged-in');
+            }
+        }
+        
+        // Update user information in the dropdown
+        function updateUserInfo(name, className) {
+            const userNameElement = document.getElementById('userName');
+            const userClassElement = document.getElementById('userClass');
+            const userInitialsElement = document.getElementById('userInitials');
+            
+            if (userNameElement) userNameElement.textContent = name;
+            if (userClassElement) userClassElement.textContent = className || 'Học viên HLK';
+            if (userInitialsElement) {
+                const initials = name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().substring(0, 2);
+                userInitialsElement.textContent = initials;
+            }
+        }
+        
+        // Toggle profile dropdown
+        function toggleProfileDropdown() {
+            const dropdown = document.querySelector('.profile-dropdown');
+            
+            if (isDropdownOpen) {
+                closeProfileDropdown();
+            } else {
+                openProfileDropdown();
+            }
+        }
+        
+        function openProfileDropdown() {
+            const dropdown = document.querySelector('.profile-dropdown');
+            if (dropdown) {
+                dropdown.classList.add('show');
+                isDropdownOpen = true;
+            }
+        }
+        
+        function closeProfileDropdown() {
+            const dropdown = document.querySelector('.profile-dropdown');
+            if (dropdown) {
+                dropdown.classList.remove('show');
+                isDropdownOpen = false;
+            }
+        }
+        
+        // Profile menu actions
+        function viewProfile() {
+            alert('Chức năng xem hồ sơ đang được phát triển!');
+            closeProfileDropdown();
+        }
+        
+        function viewTournaments() {
+            alert('Chức năng xem giải đấu đang được phát triển!');
+            closeProfileDropdown();
+        }
+        
+        function viewNotifications() {
+            alert('Chức năng thông báo đang được phát triển!');
+            closeProfileDropdown();
+        }
+        
+        function viewSettings() {
+            alert('Chức năng cài đặt đang được phát triển!');
+            closeProfileDropdown();
+        }
+        
+        function logout() {
+            const confirmLogout = confirm('Bạn có chắc muốn đăng xuất?');
+            if (confirmLogout) {
+                // Delete user cookies
+                deleteCookie('hlk_user_token');
+                deleteCookie('hlk_user_name');
+                deleteCookie('hlk_user_class');
+                
+                // Update UI
+                checkLoginStatus();
+                closeProfileDropdown();
+                
+                alert('Đã đăng xuất thành công!');
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdownContainer = document.querySelector('.profile-dropdown-container');
+            if (dropdownContainer && !dropdownContainer.contains(event.target)) {
+                closeProfileDropdown();
+            }
+        });
+        
+        // Date-based and login-based content display
+        function checkRegistrationDate() {
+            // Target date: August 1st, 2025 (01/08/2025 in DD/MM/YYYY format)
+            const targetDate = new Date(2025, 7, 1); // Month is 0-indexed, so 7 = August
+            const currentDate = new Date();
+            
+            // Get main sections
+            const joinNoDate = document.getElementById('join-nodate');
+            const joinDate = document.getElementById('join-date');
+            const joinForm = document.getElementById('join-form');
+            
+            // Hide all sections first
+            joinNoDate.style.display = 'none';
+            joinDate.style.display = 'none';
+            joinForm.style.display = 'none';
+            
+            if (currentDate >= targetDate) {
+                // Registration period is open - now check login status
+                checkUserLoginForRegistration();
+            } else {
+                // Show registration not yet open
+                joinNoDate.style.display = 'block';
+            }
+        }
+        
+        // Check user login status for registration display
+        function checkUserLoginForRegistration() {
+            const userToken = getCookie('hlk_user_token');
+            const joinDate = document.getElementById('join-date');
+            const joinForm = document.getElementById('join-form');
+            
+            if (userToken) {
+                // User is logged in - show registration form
+                joinForm.style.display = 'block';
+            } else {
+                // User is not logged in - show login/register options
+                joinDate.style.display = 'block';
+            }
+        }
+        
+        // Team Management Functions
+        
+        // Show/hide form functions
+        function showCreateTeamForm() {
+            document.getElementById('create-team-form').style.display = 'block';
+            document.getElementById('join-team-form').style.display = 'none';
+        }
+        
+        function hideCreateTeamForm() {
+            document.getElementById('create-team-form').style.display = 'none';
+            document.getElementById('teamCreateForm').reset();
+        }
+        
+        function showJoinTeamForm() {
+            document.getElementById('join-team-form').style.display = 'block';
+            document.getElementById('create-team-form').style.display = 'none';
+        }
+        
+        function hideJoinTeamForm() {
+            document.getElementById('join-team-form').style.display = 'none';
+            document.getElementById('teamJoinForm').reset();
+        }
+        
+        // Create new team using PHP backend
+        function createTeam(teamName, teamDescription) {
+            const formData = new FormData();
+            formData.append('action', 'create');
+            formData.append('team_name', teamName);
+            formData.append('team_description', teamDescription);
+            
+            fetch('php/team.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayTeamInfo(data.team);
+                    hideCreateTeamForm();
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Lỗi kết nối đến server. Vui lòng thử lại.');
+            });
+        }
+        
+        // Join existing team using PHP backend
+        function joinTeam(teamCode) {
+            const formData = new FormData();
+            formData.append('action', 'join');
+            formData.append('team_code', teamCode);
+            
+            fetch('php/team.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayTeamInfo(data.team);
+                    hideJoinTeamForm();
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Lỗi kết nối đến server. Vui lòng thử lại.');
+            });
+        }
+        
+        // Leave team function
+        function leaveTeam() {
+            const confirmLeave = confirm('Bạn có chắc muốn rời khỏi đội?');
+            if (!confirmLeave) return;
+            
+            const formData = new FormData();
+            formData.append('action', 'leave');
+            
+            fetch('php/team.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('team-info').style.display = 'none';
+                    alert(data.message);
+                    // Reload page to show team options again
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Lỗi kết nối đến server. Vui lòng thử lại.');
+            });
+        }
+        
+        // Display team information
+        function displayTeamInfo(team) {
+            const teamInfoDiv = document.getElementById('team-info');
+            const teamDetailsDiv = document.getElementById('team-details');
+            
+            let membersHtml = '';
+            team.members.forEach((member, index) => {
+                const roleText = member.role === 'leader' ? 'Đội trưởng' : 'Thành viên';
+                const joinedDate = new Date(member.joined_at).toLocaleDateString('vi-VN');
+                membersHtml += `
+                    <div style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px;">
+                        <strong>Vị trí ${index + 1}: ${member.full_name}</strong> (${roleText})<br>
+                        <small>Lớp: ${member.class} | Tham gia: ${joinedDate}</small>
+                    </div>
+                `;
+            });
+            
+            const canInvite = team.member_count < 7;
+            const currentUserRole = team.role; // This comes from getUserTeam function
+            
+            teamDetailsDiv.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <h4>Tên đội: ${team.team_name}</h4>
+                    <p><strong>Mã đội:</strong> <span style="color: var(--brand); font-weight: bold; font-size: 18px;">${team.team_code}</span></p>
+                    ${team.team_description ? `<p><strong>Mô tả:</strong> ${team.team_description}</p>` : ''}
+                    <p><strong>Số thành viên:</strong> ${team.member_count}/7</p>
+                </div>
+                
+                <h4>Danh sách thành viên:</h4>
+                ${membersHtml}
+                
+                ${canInvite ? `
+                    <div style="margin-top: 16px; padding: 12px; background: var(--bg-soft); border-radius: 8px;">
+                        <strong>Hướng dẫn mời thêm thành viên:</strong><br>
+                        Chia sẻ mã đội <strong>${team.team_code}</strong> với bạn bè để họ có thể tham gia đội.
+                    </div>
+                ` : ''}
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="leaveTeam()">
+                        ${currentUserRole === 'leader' ? 'Giải tán đội' : 'Rời khỏi đội'}
+                    </button>
+                </div>
+            `;
+            
+            teamInfoDiv.style.display = 'block';
+            
+            // Hide the team creation/join options
+            document.querySelector('.grid').style.display = 'none';
+        }
+        
+        // Check if user already has a team on load
+        function checkExistingTeam() {
+            fetch('php/team.php?action=get_team')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.team) {
+                    displayTeamInfo(data.team);
+                }
+            })
+            .catch(error => {
+                console.error('Error checking existing team:', error);
+            });
+        }
+        
+        // Form submission handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create team form handler
+            document.getElementById('teamCreateForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const teamName = document.getElementById('teamName').value.trim();
+                const teamDescription = document.getElementById('teamDescription').value.trim();
+                
+                if (!teamName) {
+                    alert('Vui lòng nhập tên đội!');
+                    return;
+                }
+                
+                createTeam(teamName, teamDescription);
+            });
+            
+            // Join team form handler
+            document.getElementById('teamJoinForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const teamCode = document.getElementById('teamId').value.trim();
+                
+                if (!teamCode || teamCode.length !== 6) {
+                    alert('Vui lòng nhập mã đội hợp lệ (6 chữ số)!');
+                    return;
+                }
+                
+                joinTeam(teamCode);
+            });
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            checkRegistrationDate();
+            
+            // Check if user already has a team when join-form is displayed
+            setTimeout(() => {
+                if (document.getElementById('join-form').style.display === 'block') {
+                    checkExistingTeam();
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
